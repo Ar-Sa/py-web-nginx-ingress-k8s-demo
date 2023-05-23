@@ -1,11 +1,12 @@
-FROM python:3.6
+FROM python:3.11-slim
+ENV PORT 8000
+EXPOSE 8000
+WORKDIR /usr/src/app
 
-COPY app/ /usr/src/app/
-WORKDIR /usr/src/app/
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN chmod +x /usr/src/app/docker_run.sh \
-&& pip install --no-cache-dir -r requirements.txt
+COPY . .
 
-EXPOSE 5000
-
-CMD /usr/src/app/docker_run.sh
+ENTRYPOINT ["python"]
+CMD ["app.py"]
